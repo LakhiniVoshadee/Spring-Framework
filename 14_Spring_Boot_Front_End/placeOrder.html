@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Place Order Management</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.all.min.js"></script>
+  <style>
+    body {
+      background-color: #f4f7f6;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container-custom {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-top: 50px;
+      padding: 30px;
+    }
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    }
+    .btn-custom {
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-custom i { margin-right: 8px; }
+    .table-hover tbody tr:hover { background-color: rgba(0,123,255,0.1); cursor: pointer; }
+    .table thead { background-color: #007bff; color: white; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">SpringBoot POS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="customer.html">Customer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="item.html">Item</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="placeOrder.html">Place Order</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container container-custom">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="form-section mb-4">
+        <h3 class="text-center mb-4"><i class="fas fa-box"></i> Place Order Details</h3>
+        <form id="orderForm">
+          <div class="mb-3">
+            <label class="form-label">Order ID</label>
+            <input type="text" class="form-control" id="orderId" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer ID</label>
+            <input type="text" class="form-control" id="customerId" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Item Code</label>
+            <input type="text" class="form-control" id="itemCode" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" class="form-control" id="quantity" required>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary btn-custom flex-grow-1">
+              <i class="fas fa-save"></i> Add to cart
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="table-section">
+        <h3 class="mb-4"><i class="fas fa-list"></i> Order List</h3>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Customer ID</th>
+              <th>Order Date</th>
+              <th>Item Code</th>
+              <th>Quantity</th>
+              <th>Total Price</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="orderTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    const baseUrl = "http://localhost:8080/api/orders";
+
+    loadOrders();
+
+    $('#orderForm').submit(function(e) {
+      e.preventDefault();
+      const orderData = {
+        customerId: $('#customerId').val(),
+        orderDate: new Date().toISOString().split('T')[0],
+        orderDetails: [{
+          itemCode: $('#itemCode').val(),
+          quantity: $('#quantity').val(),
+          totalPrice: $('#quantity').val() * 100
+        }]
+      };
+
+      $.ajax({
+        url: `${baseUrl}/place`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(orderData),
+        success: function() {
+          loadOrders();
+          Swal.fire({ icon: 'success', title: 'Success!', text: 'Order placed successfully!', timer: 2000, showConfirmButton: false });
+        },
+        error: function(xhr) {
+          Swal.fire({ icon: 'error', title: 'Error!', text: 'Error placing order: ' + xhr.responseText, confirmButtonText: 'OK' });
+        }
+      });
+    });
+
+    function loadOrders() {
+      $.ajax({
+        url: `${baseUrl}/all`,
+        type: 'GET',
+        success: function(response) {
+          $('#orderTableBody').empty();
+          response.forEach(function(order) {
+            $('#orderTableBody').append(`
+              <tr>
+                <td>${order.customerId}</td>
+                <td>${order.orderDate}</td>
+                <td>${order.orderDetails.map(od => od.itemCode).join(', ')}</td>
+                <td>${order.orderDetails.map(od => od.quantity).join(', ')}</td>
+                <td>${order.orderDetails.map(od => od.totalPrice).join(', ')}</td>
+                <td>
+                  <button class="btn btn-success btn-custom flex-grow-1" onclick="selectOrder('${order.customerId}', '${order.orderDate}', '${order.orderDetails.map(od => od.itemCode).join(', ')}', '${order.orderDetails.map(od => od.quantity).join(', ')}')">
+                    <i class="fas fa-edit"></i> Update
+                  </button>
+                  <button class="btn btn-danger btn-custom flex-grow-1" onclick="deleteOrder('${order.customerId}')">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            `);
+          });
+        },
+        error: function(xhr) {
+          Swal.fire({ icon: 'error', title: 'Error!', text: 'Error loading orders: ' + xhr.responseText, confirmButtonText: 'OK' });
+        }
+      });
+    }
+
+    window.selectOrder = function(customerId, orderDate, itemCodes, quantities) {
+      $('#customerId').val(customerId);
+      $('#orderDate').val(orderDate);
+      $('#itemCode').val(itemCodes);
+      $('#quantity').val(quantities);
+    };
+
+    window.deleteOrder = function(customerId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `${baseUrl}/delete/${customerId}`,
+            type: 'DELETE',
+            success: function() {
+              loadOrders();
+              Swal.fire('Deleted!', 'Order has been deleted.', 'success');
+            },
+            error: function(xhr) {
+              Swal.fire('Error!', 'Error deleting order: ' + xhr.responseText, 'error');
+            }
+          });
+        }
+      });
+    };
+  });
+</script>
+
+
+</body>
+</html>

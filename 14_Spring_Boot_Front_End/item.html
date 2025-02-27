@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Management System</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.all.min.js"></script>
+  <style>
+    body {
+      background-color: #f4f7f6;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container-custom {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-top: 50px;
+      padding: 30px;
+    }
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    }
+    .btn-custom {
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-custom i { margin-right: 8px; }
+    .table-hover tbody tr:hover { background-color: rgba(0,123,255,0.1); cursor: pointer; }
+    .table thead { background-color: #007bff; color: white; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">SpringBoot POS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="customer.html">Customer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="item.html">Item</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="placeOrder.html">Place Order</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container container-custom">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="form-section mb-4">
+        <h3 class="text-center mb-4"><i class="fas fa-box"></i> Item Details</h3>
+        <form id="itemForm">
+          <div class="mb-3">
+            <label class="form-label">Item Code</label>
+            <input type="text" class="form-control" id="code" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="number" class="form-control" id="quantity" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Price</label>
+            <input type="number" step="0.01" class="form-control" id="price" required>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary btn-custom flex-grow-1">
+              <i class="fas fa-save"></i> Save
+            </button>
+            <button type="button" class="btn btn-success btn-custom flex-grow-1" onclick="updateItem()">
+              <i class="fas fa-edit"></i> Update
+            </button>
+            <button type="button" class="btn btn-danger btn-custom flex-grow-1" onclick="deleteItem($('#code').val())">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="table-section">
+        <h3 class="mb-4"><i class="fas fa-list"></i> Item List</h3>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Code</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+            </thead>
+            <tbody id="itemTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    const baseUrl = "http://localhost:8080/api/v1/item";
+
+    loadItems();
+
+    $('#itemForm').submit(function(e) {
+      e.preventDefault();
+      const itemData = {
+        code: $('#code').val(),
+        name: $('#name').val(),
+        quantity: $('#quantity').val(),
+        price: $('#price').val()
+      };
+
+      $.ajax({
+        url: `${baseUrl}/save`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(itemData),
+        success: function() {
+          loadItems();
+          clearForm();
+          Swal.fire({ icon: 'success', title: 'Success!', text: 'Item saved successfully!', timer: 2000, showConfirmButton: false });
+        }
+      });
+    });
+
+    function loadItems() {
+      $.ajax({
+        url: `${baseUrl}/getall`,
+        type: 'GET',
+        success: function(response) {
+          $('#itemTableBody').empty();
+          console.log("API Response:", response.data);
+          if (response.code==200){
+            response.data.forEach(function(item) {
+              $('#itemTableBody').append(`
+              <tr onclick="selectItem('${item.code}', '${item.name}', '${item.quantity}', '${item.price}')">
+                <td>${item.code}</td>
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>${item.price}</td>
+              </tr>
+            `);
+            });
+          }
+
+        }
+      });
+    }
+
+    function clearForm() {
+      $('#itemForm')[0].reset();
+      $('#code').prop('readonly', false);
+    }
+
+    window.selectItem = function(code, name, quantity, price) {
+      $('#code').val(code);
+      $('#name').val(name);
+      $('#quantity').val(quantity);
+      $('#price').val(price);
+      $('#code').prop('readonly', true);
+    };
+
+    window.updateItem = function() {
+      const itemData = {
+        code: $('#code').val(),
+        name: $('#name').val(),
+        quantity: $('#quantity').val(),
+        price: $('#price').val()
+      };
+
+      $.ajax({
+        url: `${baseUrl}/update`,
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(itemData),
+        success: function() {
+          loadItems();
+          clearForm();
+          Swal.fire({ icon: 'success', title: 'Updated!', text: 'Item updated successfully!', timer: 2000, showConfirmButton: false });
+        }
+      });
+    };
+
+    window.deleteItem = function(code) {
+      $.ajax({
+        url: `${baseUrl}/delete/${code}`,
+        type: 'DELETE',
+        success: function() {
+          loadItems();
+          clearForm();
+          Swal.fire({ icon: 'success', title: 'Deleted!', text: 'Item has been deleted.', timer: 2000, showConfirmButton: false });
+        }
+      });
+    };
+  });
+</script>
+</body>
+</html>

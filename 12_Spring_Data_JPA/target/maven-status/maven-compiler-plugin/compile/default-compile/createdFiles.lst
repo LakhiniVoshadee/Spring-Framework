@@ -1,0 +1,6 @@
+lk\ijse\config\JPAConfig.class
+lk\ijse\config\WebAppConfig.class
+lk\ijse\config\WebRootConfig.class
+lk\ijse\entity\customer.class
+lk\ijse\repository\CustomerRepo.class
+lk\ijse\WebAppInitializer.class

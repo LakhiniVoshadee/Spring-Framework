@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Rose Facts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Random Rose Facts</h1>
+    <p id="factDisplay">Click the button to see a random rose fact!</p>
+    <button id="factButton">Show Random Fact</button>
+</div>
+<script>
+    const roseFacts = [
+        "Roses are one of the oldest flowers, with fossil evidence dating back over 35 million years.",
+        "There are over 300 species of roses and thousands of cultivars.",
+        "Roses come in a variety of colors, each symbolizing different meanings; for example, red roses symbolize love, while yellow roses symbolize friendship.",
+        "The rose is the national flower of the United States, and it was designated as such in 1986.",
+        "Roses are not just beautiful; they also have a variety of uses, including in perfumes, cosmetics, and culinary dishes.",
+        "The world's largest rose bush is located in Tombstone, Arizona, and is over 130 years old.",
+        "Roses can be found on every continent except Antarctica.",
+        "The scent of roses has been shown to have calming effects and can reduce stress.",
+        "Roses are perennial plants, meaning they can live for many years and bloom repeatedly.",
+        "The rose family (Rosaceae) includes many other fruits and flowers, such as apples, strawberries, and cherries."
+    ];
+
+    document.getElementById('factButton').addEventListener('click', function() {
+        const randomIndex = Math.floor(Math.random() * roseFacts.length);
+        document.getElementById('factDisplay').innerText = roseFacts[randomIndex];
+    });
+</script>
+</body>
+</html>

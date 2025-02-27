@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Management System</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.all.min.js"></script>
+  <style>
+    body {
+      background-color: #f4f7f6;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container-custom {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-top: 50px;
+      padding: 30px;
+    }
+    .form-section, .table-section {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    }
+    .btn-custom {
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-custom i { margin-right: 8px; }
+    .table-hover tbody tr:hover { background-color: rgba(0,123,255,0.1); cursor: pointer; }
+    .table thead { background-color: #007bff; color: white; }
+    .action-btn-group { display: flex; gap: 10px; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">SpringBoot POS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="customer.html">Customer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="item.html">Item</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="placeOrder.html">Place Order</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container container-custom">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="form-section mb-4">
+        <h3 class="text-center mb-4"><i class="fas fa-user-plus me-2"></i>Customer Details</h3>
+        <form id="customerForm">
+          <div class="mb-3">
+            <label class="form-label">Customer ID</label>
+            <input type="text" class="form-control" id="id" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" id="address" required rows="3"></textarea>
+          </div>
+
+          <div class="action-btn-group">
+            <button type="submit" class="btn btn-primary btn-custom flex-grow-1">
+              <i class="fas fa-save"></i> Save
+            </button>
+            <button type="button" class="btn btn-success btn-custom flex-grow-1" onclick="updateCustomer()">
+              <i class="fas fa-edit"></i> Update
+            </button>
+            <button type="button" class="btn btn-danger btn-custom flex-grow-1" onclick="deleteCustomer($('#id').val())">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="table-section">
+        <h3 class="mb-4"><i class="fas fa-list me-2"></i>Customer List</h3>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Address</th>
+
+            </tr>
+            </thead>
+            <tbody id="customerTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    const baseUrl = "http://localhost:8080/api/v1/customer";
+
+    loadCustomers();
+
+    $('#customerForm').submit(function(e) {
+      e.preventDefault();
+      const customerData = {
+        id: $('#id').val(),
+        name: $('#name').val(),
+        address: $('#address').val()
+      };
+
+      $.ajax({
+        url: `${baseUrl}/save`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(customerData),
+        success: function() {
+          loadCustomers();
+          clearForm();
+          Swal.fire({ icon: 'success', title: 'Success!', text: 'Customer saved successfully!', timer: 2000, showConfirmButton: false });
+        },
+        error: function(xhr) {
+          Swal.fire({ icon: 'error', title: 'Error!', text: 'Error: ' + xhr.responseText, confirmButtonText: 'OK' });
+        }
+      });
+    });
+
+    function loadCustomers() {
+      $.ajax({
+        url: `${baseUrl}/getall`,
+        type: 'GET',
+        success: function(response) {
+          console.log("API Response:", response.data);
+          if(response.code==200){
+            $('#customerTableBody').empty();
+            response.data.forEach(function(customer) {
+              $('#customerTableBody').append(`
+              <tr onclick="selectCustomer('${customer.id}', '${customer.name}', '${customer.address}')">
+                <td>${customer.id}</td>
+                <td>${customer.name}</td>
+                <td>${customer.address}</td>
+              </tr>
+            `);
+            });
+          }else {
+            alert(response.message)
+          }
+
+
+
+
+        },
+        error: function(xhr) {
+          Swal.fire({ icon: 'error', title: 'Error!', text: 'Error loading customers: ' + xhr.responseText, confirmButtonText: 'OK' });
+        }
+      });
+    }
+
+    function clearForm() {
+      $('#customerForm')[0].reset();
+      $('#id').prop('readonly', false);
+    }
+
+    window.selectCustomer = function(id, name, address) {
+      $('#id').val(id);
+      $('#name').val(name);
+      $('#address').val(address);
+      $('#id').prop('readonly', true);
+    };
+
+    window.updateCustomer = function() {
+      const customerData = {
+        id: $('#id').val(),
+        name: $('#name').val(),
+        address: $('#address').val(),
+      };
+
+      $.ajax({
+        url: `${baseUrl}/update`,
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(customerData),
+        success: function() {
+          loadCustomers();
+          clearForm();
+          Swal.fire({ icon: 'success', title: 'Success!', text: 'Customer updated successfully!', timer: 2000, showConfirmButton: false });
+        },
+        error: function(xhr) {
+          Swal.fire({ icon: 'error', title: 'Error!', text: 'Error: ' + xhr.responseText, confirmButtonText: 'OK' });
+        }
+      });
+    };
+
+    window.deleteCustomer = function(id) {
+      if (!id) {
+        Swal.fire({ icon: 'error', title: 'Error!', text: 'Please select a customer to delete', confirmButtonText: 'OK' });
+        return;
+      }
+
+      $.ajax({
+        url: `${baseUrl}/delete/${id}`,
+        type: 'DELETE',
+        success: function() {
+          loadCustomers();
+          clearForm();
+          Swal.fire({ icon: 'success', title: 'Deleted!', text: 'Customer has been deleted.', timer: 2000, showConfirmButton: false });
+        }
+      });
+    };
+  });
+</script>
+
+</body>
+</html>
+
