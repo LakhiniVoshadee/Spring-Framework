@@ -1,0 +1,71 @@
+2025-03-05T11:47:25.221+05:30  INFO 19240 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : Starting SpringBootLoggins17Application using Java 17.0.10 with PID 19240 (D:\IJSE docs\AAD\Spring Framework\Spring_Boot_Loggins_17\target\classes started by Voshadee in D:\IJSE docs\AAD\Spring Framework)
+2025-03-05T11:47:25.224+05:30 DEBUG 19240 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-03-05T11:47:25.225+05:30  INFO 19240 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : No active profile set, falling back to 1 default profile: "default"
+2025-03-05T11:47:26.053+05:30  INFO 19240 --- [Spring_Boot_Loggins_17] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-03-05T11:47:26.064+05:30  INFO 19240 --- [Spring_Boot_Loggins_17] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-03-05T11:47:26.064+05:30  INFO 19240 --- [Spring_Boot_Loggins_17] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-03-05T11:47:26.129+05:30  INFO 19240 --- [Spring_Boot_Loggins_17] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-03-05T11:47:26.130+05:30  INFO 19240 --- [Spring_Boot_Loggins_17] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 862 ms
+2025-03-05T11:47:26.470+05:30  WARN 19240 --- [Spring_Boot_Loggins_17] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-03-05T11:47:26.496+05:30  INFO 19240 --- [Spring_Boot_Loggins_17] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-03-05T11:47:26.519+05:30 ERROR 19240 --- [Spring_Boot_Loggins_17] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2025-03-05T11:47:47.189+05:30  INFO 18416 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : Starting SpringBootLoggins17Application using Java 17.0.10 with PID 18416 (D:\IJSE docs\AAD\Spring Framework\Spring_Boot_Loggins_17\target\classes started by Voshadee in D:\IJSE docs\AAD\Spring Framework)
+2025-03-05T11:47:47.191+05:30 DEBUG 18416 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-03-05T11:47:47.192+05:30  INFO 18416 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : No active profile set, falling back to 1 default profile: "default"
+2025-03-05T11:47:47.981+05:30  INFO 18416 --- [Spring_Boot_Loggins_17] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-03-05T11:47:47.992+05:30  INFO 18416 --- [Spring_Boot_Loggins_17] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-03-05T11:47:47.993+05:30  INFO 18416 --- [Spring_Boot_Loggins_17] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-03-05T11:47:48.037+05:30  INFO 18416 --- [Spring_Boot_Loggins_17] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-03-05T11:47:48.038+05:30  INFO 18416 --- [Spring_Boot_Loggins_17] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 794 ms
+2025-03-05T11:47:48.335+05:30  WARN 18416 --- [Spring_Boot_Loggins_17] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-03-05T11:47:48.348+05:30  INFO 18416 --- [Spring_Boot_Loggins_17] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-03-05T11:47:48.360+05:30 ERROR 18416 --- [Spring_Boot_Loggins_17] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2025-03-05T11:48:21.706+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : Starting SpringBootLoggins17Application using Java 17.0.10 with PID 6824 (D:\IJSE docs\AAD\Spring Framework\Spring_Boot_Loggins_17\target\classes started by Voshadee in D:\IJSE docs\AAD\Spring Framework)
+2025-03-05T11:48:21.709+05:30 DEBUG 6824 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : Running with Spring Boot v3.4.3, Spring v6.2.3
+2025-03-05T11:48:21.710+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : No active profile set, falling back to 1 default profile: "default"
+2025-03-05T11:48:22.514+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-03-05T11:48:22.525+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-03-05T11:48:22.525+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-03-05T11:48:22.589+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-03-05T11:48:22.589+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 829 ms
+2025-03-05T11:48:22.883+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-03-05T11:48:22.890+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [main] l.i.s.SpringBootLoggins17Application     : Started SpringBootLoggins17Application in 1.622 seconds (process running for 2.1)
+2025-03-05T11:48:32.968+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05T11:48:32.968+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-03-05T11:48:32.970+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-03-05T11:48:32.990+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [http-nio-8080-exec-1] l.i.s.controller.DemoController          : This is an info message
+2025-03-05T11:48:32.991+05:30 DEBUG 6824 --- [Spring_Boot_Loggins_17] [http-nio-8080-exec-1] l.i.s.controller.DemoController          : This is a debug message
+2025-03-05T11:48:32.991+05:30  WARN 6824 --- [Spring_Boot_Loggins_17] [http-nio-8080-exec-1] l.i.s.controller.DemoController          : This is a warn message
+2025-03-05T11:48:32.991+05:30 ERROR 6824 --- [Spring_Boot_Loggins_17] [http-nio-8080-exec-1] l.i.s.controller.DemoController          : This is a error message
+2025-03-05T12:10:17.793+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-03-05T12:10:18.425+05:30  INFO 6824 --- [Spring_Boot_Loggins_17] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
